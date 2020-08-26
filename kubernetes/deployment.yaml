@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helloworld
+  labels:
+    app: helloworld
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: helloworld
+      labels:
+        app: helloworld
+    spec:
+      containers:
+        - name: helloworld
+          image: sergbs/django-hello-world
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: helloworld
