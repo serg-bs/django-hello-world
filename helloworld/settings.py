@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import environ
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,3 +130,58 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+FLUENT_HOST = env.str('FLUENT_HOST', default='efk-fluentd-0')
+FLUENT_PORT = env.int('FLUENT_PORT', default=24224)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+        'fluentd': {
+            '()': 'fluent.handler.FluentRecordFormatter',
+            'format': {
+                'level': '%(levelname)s',
+                'hostname': '%(hostname)s',
+                'where': '%(module)s.%(funcName)s',
+            }
+        }
+},
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'fluentinfo':{
+            'level':'INFO',
+            'class':'fluent.handler.FluentHandler',
+            'formatter': 'fluentd',
+            'tag':'app.info',
+            'host': FLUENT_HOST,
+            'port': FLUENT_PORT,
+            # 'timeout':3.0,
+            # 'verbose': False
+        }
+    },
+    'loggers': {
+        'helloworld': {
+            'handlers': ['console', 'fluentinfo'],
+            'level': 'INFO'
+        }
+    }
+}

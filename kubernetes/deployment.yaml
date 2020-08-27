@@ -14,10 +14,13 @@ spec:
     spec:
       containers:
         - name: helloworld
-          image: sergbs/django-hello-world
+          image: sergbs/django-hello-world:1
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
+          env:
+            - name: FLUENT_HOST
+              value: "efk-fluentd-0.efk"
           readinessProbe:
             httpGet:
               path: /healthz
