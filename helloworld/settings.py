@@ -172,6 +172,7 @@ LOGGING = {
             'class':'fluent.handler.FluentHandler',
             'formatter': 'fluentd',
             'tag':'app.info',
+            'nanosecond_precision': True,
             'host': FLUENT_HOST,
             'port': FLUENT_PORT,
             # 'timeout':3.0,
