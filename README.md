@@ -31,10 +31,8 @@ You can debug container ```docker run -d -p8000:8000 test /bin/bash```
    http://localhost:8000/healthz      # check Healthz
    ```
      
-## Run with kubernetes
-   1. ```docker build -t test .```
-   2. ```docker tag test sergbs/django-hello-world```     
-   3. ```docker push sergbs/django-hello-world```     
-   4. ```kubectl create -f ./kubernetes/deployment.yaml```     
-    ```kubectl create -f ./kubernetes/service.yaml```     
+## Run with kubernetes    
+   1. ```kubectl create -f ./kubernetes/deployment.yaml```     
+   1. ```kubectl create -f ./kubernetes/service.yaml```    
+   1. Open http://my_host:30011 
     

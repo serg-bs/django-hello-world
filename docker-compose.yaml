@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    image: sergbs/django-hello-world
     container_name: helloworld
     volumes:
       - .:/home/app/helloworld

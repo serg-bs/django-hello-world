@@ -131,7 +131,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-FLUENT_HOST = env.str('FLUENT_HOST', default='efk-fluentd-0')
+FLUENT_HOST = env.str('FLUENT_HOST', default='efk-fluentd-headless.efk')
 FLUENT_PORT = env.int('FLUENT_PORT', default=24224)
 
 LOGGING = {

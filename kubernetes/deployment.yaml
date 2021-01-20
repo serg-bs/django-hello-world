@@ -20,7 +20,9 @@ spec:
             - containerPort: 8000
           env:
             - name: FLUENT_HOST
-              value: "efk-fluentd-0.efk"
+              value: "efk-fluentd-headless.efk"
+            - name: FLUENT_PORT
+              value: "24224"
           readinessProbe:
             httpGet:
               path: /healthz
