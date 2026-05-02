@@ -15,13 +15,7 @@ RUN         useradd -m -d /home/${USER} ${USER} \
 
 RUN         mkdir -p ${PROJECTPATH}
 
-ADD         . ${PROJECTPATH}
 
-RUN         pip install --upgrade pip \
-            && pip install --no-cache-dir -r ${PROJECTPATH}/requirements.txt
-
-WORKDIR     ${PROJECTPATH}
-USER        ${user}
 
 COPY entrypoint.sh /entrypoint.sh
 RUN  chmod +x /entrypoint.sh \
